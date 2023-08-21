@@ -9,24 +9,29 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="640.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfacedado.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="640.0" prefWidth="651.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfacedado.FXMLDocumentController">
    <children>
       <Label fx:id="labelTitulo" layoutX="164.0" layoutY="36.0" text="¡¡¡Tirar Los Dados!!!">
          <font>
             <Font name="Times New Roman" size="43.0" />
          </font>
       </Label>
-      <Pane layoutX="55.0" layoutY="85.0" prefHeight="278.0" prefWidth="586.0">
+      <Pane fx:id="panelFotos" layoutX="55.0" layoutY="85.0" prefHeight="278.0" prefWidth="560.0">
          <effect>
             <Bloom />
          </effect>
          <padding>
             <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
          </padding>
+         <children>
+            <ImageView fx:id="marco1" fitHeight="150.0" fitWidth="162.0" layoutX="67.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="marco2" fitHeight="150.0" fitWidth="162.0" layoutX="327.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
       </Pane>
       <TextField fx:id="ValorD1" alignment="CENTER" layoutX="74.0" layoutY="410.0" prefHeight="100.0" prefWidth="100.0" promptText="0">
          <font>
@@ -48,19 +53,18 @@
             <Font size="22.0" />
          </font>
       </Label>
-      <TextArea fx:id="AreaTextList" layoutX="382.0" layoutY="395.0" prefHeight="175.0" prefWidth="221.0" />
+      <TextArea fx:id="AreaTextList" layoutX="382.0" layoutY="395.0" prefHeight="185.0" prefWidth="211.0" />
       <MenuBar layoutY="2.0">
         <menus>
           <Menu fx:id="BottonGuardar" mnemonicParsing="false" onAction="#GuardarDatos" text="File">
             <items>
-              <MenuItem fx:id="GuardarDatos" mnemonicParsing="false" text="Guardar" />
-                  <MenuItem fx:id="CargarDatos" mnemonicParsing="false" text="Cargar" />
+              <MenuItem fx:id="GuardarDatos" mnemonicParsing="false" onAction="#GuardarDatos" text="Guardar" />
+                  <MenuItem fx:id="CargarDatos" mnemonicParsing="false" onAction="#CargarDatos" text="Cargar" />
             </items>
           </Menu>
         </menus>
       </MenuBar>
       <Button fx:id="BottonIniciar" layoutX="89.0" layoutY="526.0" mnemonicParsing="false" onAction="#IniciarTiradas" prefHeight="32.0" prefWidth="71.0" text="Iniciar" />
       <Button fx:id="BottonParar" layoutX="218.0" layoutY="526.0" mnemonicParsing="false" onAction="#PararTirada" prefHeight="32.0" prefWidth="71.0" text="Parar" />
-      <Button fx:id="MostrarDatos" layoutX="457.0" layoutY="588.0" mnemonicParsing="false" onAction="#TraerDatos" prefHeight="32.0" prefWidth="71.0" text="Mostrar" />
    </children>
 </AnchorPane>

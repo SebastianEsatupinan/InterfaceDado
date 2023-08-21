@@ -17,6 +17,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import modelo.Pila;
+import java.util.HashMap;
+import java.util.Map;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class FXMLDocumentController implements Initializable {
     
@@ -41,7 +45,31 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextArea AreaTextList;
     
+    @FXML
+    private ImageView marco1;
+    
+    @FXML
+    private ImageView marco2;
+    
+    //Mapa de Imagenes
+    private Map<Integer, String> mapaImagenesDados;
+    
+    // Lista De Lanzamientos
     Pila<Lanzamiento> pilaLanzamientos = new Pila<>();
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        
+        // Carga las imágenes de los dados en el mapa
+        mapaImagenesDados = new HashMap<>();
+        mapaImagenesDados.put(1, "/ImagenesDado/Dn1.JPG");
+        mapaImagenesDados.put(2, "/ImagenesDado/Dn2.JPG");
+        mapaImagenesDados.put(3, "/ImagenesDado/Dn3.JPG");
+        mapaImagenesDados.put(4, "/ImagenesDado/Dn4.JPG");
+        mapaImagenesDados.put(5, "/ImagenesDado/Dn5.JPG");
+        mapaImagenesDados.put(6, "/ImagenesDado/Dn6.JPG");
+        
+    }    
        
     @FXML
     private void IniciarTiradas(ActionEvent event) {   
@@ -66,7 +94,13 @@ public class FXMLDocumentController implements Initializable {
 
                 ValorD1.setText(String.valueOf(valorDado1));
                 ValorD2.setText(String.valueOf(valorDado2));
-            }
+                
+                
+                // Actualiza los componentes ImageView con las imágenes de los dados
+                marco1.setImage(new Image(mapaImagenesDados.get(valorDado1)));
+                marco2.setImage(new Image(mapaImagenesDados.get(valorDado2)));
+                
+                }
             };
       
         contador.scheduleAtFixedRate(tarea, 0, 4000);
@@ -75,20 +109,29 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void PararTirada(ActionEvent event) {
-        // Habilitar el botón de iniciar y deshabilitar el de parar
+        //Habilitar el botón de iniciar y deshabilitar el de parar
         //IniciarTiradas.setDisable(false);
         //PararTirada.setDisable(true);
 
-        // Cancelar el temporizador
+        //Cancelar el temporizador
         contador.cancel();
         
-        AreaTextList.setText(pilaLanzamientos.toString());
+         StringBuilder data = new StringBuilder();
+    
+        // Agregar cada lanzamiento al StringBuilder con una nueva línea
+        while (!pilaLanzamientos.estaVacia()) {
+            Lanzamiento objL = pilaLanzamientos.desapilar();
+            data.append("Dado 1: ").append(objL.getDado1()).append(" - Dado 2: ").append(objL.getDado2()).append("\n");
+        }
+    
+        AreaTextList.setText(data.toString());
+
         // Crear un nuevo temporizador para futuras tiradas
         contador = new Timer();
     }
     
     @FXML
-    private void TraerDatos(ActionEvent event) {
+    private void CargarDatos(ActionEvent event) {
         try (BufferedReader reader = new BufferedReader(new FileReader("lanzamientos.txt"))) {
         String line;
         StringBuilder text = new StringBuilder();
@@ -124,9 +167,5 @@ public class FXMLDocumentController implements Initializable {
     }
 }
       
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
-    }    
     
 }
