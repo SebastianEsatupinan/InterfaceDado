@@ -128,6 +128,7 @@ public class FXMLDocumentController implements Initializable {
         }
     
         AreaTextList.setText(data.toString());
+        AreaTextR.setText("La probabilidad de sacar exactamente un 6 en 6 tiradas es: " + CalcularProbabilidad());
 
         // Crear un nuevo temporizador para futuras tiradas
         contador = new Timer();
@@ -168,6 +169,26 @@ public class FXMLDocumentController implements Initializable {
         e.printStackTrace();
         AreaTextList.setText("Error al guardar los datos.");
     }
+}
+    private double CalcularProbabilidad() {
+    int tiradas = 6;
+    int valorObjetivo = 6;
+    double probabilidad = calcularPBi(tiradas, valorObjetivo);
+    return probabilidad;
+    
+}
+
+private double calcularPBi(int n, int k) {
+    int combinaciones = factorial(n) / (factorial(k) * factorial(n - k));
+    double probabilidadUnica = 1.0 / 6.0; // Probabilidad de sacar un 6 en una tirada
+    return combinaciones * Math.pow(probabilidadUnica, k) * Math.pow(1 - probabilidadUnica, n - k);
+}
+
+private int factorial(int n) {
+    if (n == 0 || n == 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
 }
       
     
