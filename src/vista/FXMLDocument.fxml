@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="640.0" prefWidth="651.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interfacedado.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="640.0" prefWidth="651.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.FXMLDocumentController">
    <children>
       <Label fx:id="labelTitulo" layoutX="164.0" layoutY="36.0" text="¡¡¡Tirar Los Dados!!!">
          <font>

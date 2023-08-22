@@ -1,4 +1,4 @@
-package interfacedado;
+package controlador;
 
 import dato.Lanzamiento;
 import java.io.BufferedReader;
