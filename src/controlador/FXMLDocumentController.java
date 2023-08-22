@@ -46,6 +46,9 @@ public class FXMLDocumentController implements Initializable {
     private TextArea AreaTextList;
     
     @FXML
+    private TextArea AreaTextR;
+    
+    @FXML
     private ImageView marco1;
     
     @FXML
