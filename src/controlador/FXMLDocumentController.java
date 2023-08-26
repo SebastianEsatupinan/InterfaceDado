@@ -18,6 +18,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import modelo.Pila;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -112,26 +113,39 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void PararTirada(ActionEvent event) {
-        //Habilitar el botón de iniciar y deshabilitar el de parar
-        //IniciarTiradas.setDisable(false);
-        //PararTirada.setDisable(true);
-
-        //Cancelar el temporizador
+        
         contador.cancel();
         
-         StringBuilder data = new StringBuilder();
+        StringBuilder data = new StringBuilder();
+        int pares = contarPares(pilaLanzamientos);
+        double promedio = calcularPromedio(pilaLanzamientos);
+        double[] porcentajes = calcularPorcentajes(pilaLanzamientos);
+        AreaTextList.setText(data.toString());
+        
     
         // Agregar cada lanzamiento al StringBuilder con una nueva línea
         while (!pilaLanzamientos.estaVacia()) {
             Lanzamiento objL = pilaLanzamientos.desapilar();
-            data.append("Dado 1: ").append(objL.getDado1()).append(" - Dado 2: ").append(objL.getDado2()).append("\n");
+            data.append("Dado Uno: ").append(objL.getDado1()).append(" - Dado dos: ").append(objL.getDado2()).append("\n");
         }
-    
+         // Actualizar el contenido del primer AreaText
         AreaTextList.setText(data.toString());
-        AreaTextR.setText("La probabilidad de sacar exactamente un 6 en 6 tiradas es: " + CalcularProbabilidad());
-
-        // Crear un nuevo temporizador para futuras tiradas
+    
+        // Todo Apertir de aqui Es para el segundo AreaText
+        AreaTextR.setText(
+        "La probabilidad de sacar un 6 en 6 tiradas es: " +"\n"+ String.format("%.2f", CalcularProbabilidad())+ "%" +
+        "\n"+"La Cantidad de Pares es: " + pares +
+        "\n"+"Promedio de las tiradas es: " + String.format("%.2f", promedio)+
+        "\nPorcentaje de cada número:" +
+            "\nDado 1: " + String.format("%.2f", porcentajes[0]) + "%" +
+            "\nDado 2: " + String.format("%.2f", porcentajes[1]) + "%" +
+            "\nDado 3: " + String.format("%.2f", porcentajes[2]) + "%" +
+            "\nDado 4: " + String.format("%.2f", porcentajes[3]) + "%" +
+            "\nDado 5: " + String.format("%.2f", porcentajes[4]) + "%" +
+            "\nDado 6: " + String.format("%.2f", porcentajes[5]) + "%");
+        
         contador = new Timer();
+    
     }
     
     @FXML
@@ -170,26 +184,95 @@ public class FXMLDocumentController implements Initializable {
         AreaTextList.setText("Error al guardar los datos.");
     }
 }
+    
     private double CalcularProbabilidad() {
-    int tiradas = 6;
-    int valorObjetivo = 6;
-    double probabilidad = calcularPBi(tiradas, valorObjetivo);
-    return probabilidad;
-    
-}
+        int n = 6; // Número de ensayos (tiradas)
+        int k = 1; // Número de éxitos (sacar exactamente un 6)
+        double p = 1.0 / 6.0; // Probabilidad de sacar un 6 en un lanzamiento
 
-private double calcularPBi(int n, int k) {
-    int combinaciones = factorial(n) / (factorial(k) * factorial(n - k));
-    double probabilidadUnica = 1.0 / 6.0; // Probabilidad de sacar un 6 en una tirada
-    return combinaciones * Math.pow(probabilidadUnica, k) * Math.pow(1 - probabilidadUnica, n - k);
-}
-
-private int factorial(int n) {
-    if (n == 0 || n == 1) {
-        return 1;
+        int combinaciones = factorial(n) / (factorial(k) * factorial(n - k));
+        double probabilidad = combinaciones * Math.pow(p, k) * Math.pow(1 - p, n - k);
+        
+        double probabilidadPor = probabilidad*100;
+        return probabilidadPor;
     }
-    return n * factorial(n - 1);
-}
-      
     
+    private int factorial(int n) {
+        if (n == 0 || n == 1) {
+            return 1;
+        }
+        return n * factorial(n - 1);
+    }
+
+    private double calcularPromedio(Pila<Lanzamiento> lanzamientos) {
+        int sum = 0;
+        int count = 0;
+
+        Pila<Lanzamiento> pilaTemp = new Pila<>();
+
+        while (!lanzamientos.estaVacia()) {
+            Lanzamiento lanzamiento = lanzamientos.desapilar();
+            pilaTemp.apilar(lanzamiento);
+
+            sum += lanzamiento.getDado1() + lanzamiento.getDado2();
+            count += 2; // Contamos dos lanzamientos por iteración
+        }
+
+        // Restaurar la pila original
+        while (!pilaTemp.estaVacia()) {
+            lanzamientos.apilar(pilaTemp.desapilar());
+        }
+
+        return (double) sum / count;
+    }
+    
+    private int contarPares(Pila<Lanzamiento> lanzamientos) {
+        int pares = 0;
+        Pila<Lanzamiento> pilaTemp = new Pila<>();
+
+        while (!lanzamientos.estaVacia()) {
+            Lanzamiento lanzamiento = lanzamientos.desapilar();
+            pilaTemp.apilar(lanzamiento);
+
+            if (lanzamiento.getDado1() == lanzamiento.getDado2()) {
+                pares++;
+            }
+        }
+
+        // Restaurar la pila originals
+        while (!pilaTemp.estaVacia()) {
+            lanzamientos.apilar(pilaTemp.desapilar());
+        }
+
+        return pares;
+    }
+    
+    private double[] calcularPorcentajes(Pila<Lanzamiento> lanzamientos) {
+        double[] porcentajes = new double[6];
+        int totalLanzamientos = 0;
+
+        Pila<Lanzamiento> pilaTemp = new Pila<>();
+
+        while (!lanzamientos.estaVacia()) {
+            Lanzamiento lanzamiento = lanzamientos.desapilar();
+            pilaTemp.apilar(lanzamiento);
+
+            totalLanzamientos++;
+            porcentajes[lanzamiento.getDado1() - 1]++; // Restamos 1 para que el índice sea correcto
+            porcentajes[lanzamiento.getDado2() - 1]++;
+        }
+
+        // Restaurar la pila original
+        while (!pilaTemp.estaVacia()) {
+            lanzamientos.apilar(pilaTemp.desapilar());
+        }
+
+        for (int i = 0; i < porcentajes.length; i++) {
+            porcentajes[i] = (porcentajes[i] / totalLanzamientos) * 100;
+        }
+
+        return porcentajes;
+    }
 }
+    
+

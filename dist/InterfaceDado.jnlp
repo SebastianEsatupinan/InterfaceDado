@@ -8,8 +8,8 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="InterfaceDado.jar" size="36962" download="eager" />
-    <jar href="lib\SimuladorDado.jar" size="4682" download="eager" />
+    <jar href="InterfaceDado.jar" size="38381" download="eager" />
+    <jar href="lib\SimuladorDado.jar" size="4700" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="InterfaceDado" >
     <param name="requiredFXVersion" value="8.0+"/>
